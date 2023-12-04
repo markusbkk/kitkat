@@ -477,7 +477,7 @@ fn create_tail_image_hook(t: f64) -> Image {
     Image::from(Bitmap { bits: &ret, ..TAIL })
 }
 
-const HELP: &str = r#"Usage: kitkat [--hook|--crazy|--offset OFFSET|--borderless|--resize|--sunmoon|--moon|--date]
+const HELP: &str = r#"Usage: kitkat [--hook|--crazy|--offset OFFSET|--borderless|--resize|--topmost|--sunmoon|--moon|--date]
 
 Displays a kit kat clock with the system time, or the system time with given offset if the --offset
 argument is provided.
@@ -488,6 +488,7 @@ argument is provided.
                              offset will be used)
       --borderless
       --resize
+      --topmost              keep window always on top
       --sunmoon              show sun or moon phase depending on the hour
       --moon                 show only moon phase
       --date                 show month date
@@ -519,6 +520,7 @@ fn main() {
 
     let borderless = !args.is_empty() && args.iter().any(|s| s == "--borderless");
     let resize = !args.is_empty() && args.iter().any(|s| s == "--resize");
+    let topmost = !args.is_empty() && args.iter().any(|s| s == "--topmost");
     let sunmoon = !args.is_empty() && args.iter().any(|s| s == "--sunmoon");
     let moon = !args.is_empty() && args.iter().any(|s| s == "--moon");
     if sunmoon && moon {
@@ -595,6 +597,7 @@ fn main() {
             title: true,
             borderless,
             resize,
+            topmost,
             transparency: false,
             ..WindowOptions::default()
         },
